@@ -10,16 +10,16 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    addPaths(lib); // just for testing
+    addPaths(&lib.root_module); // just for testing
     lib.linkLibC();
     lib.installHeadersDirectory("include", ".");
     b.installArtifact(lib);
 }
 
-pub fn addPaths(step: *std.Build.Step.Compile) void {
-    step.addSystemFrameworkPath(.{ .path = sdkPath("/Frameworks") });
-    step.addSystemIncludePath(.{ .path = sdkPath("/include") });
-    step.addLibraryPath(.{ .path = sdkPath("/lib") });
+pub fn addPaths(module: *std.Build.Module) void {
+    module.addSystemFrameworkPath(.{ .path = sdkPath("/Frameworks") });
+    module.addSystemIncludePath(.{ .path = sdkPath("/include") });
+    module.addLibraryPath(.{ .path = sdkPath("/lib") });
 }
 
 fn sdkPath(comptime suffix: []const u8) []const u8 {
